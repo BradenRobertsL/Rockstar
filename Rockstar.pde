@@ -14,8 +14,8 @@ boolean enter = false;
 
 void setup() {
 
-  //size(1360, 765);
-  fullScreen();
+  size(1360, 765);
+  //fullScreen();
   frameRate(30);
 
   mainMenu = new Main();
@@ -26,7 +26,6 @@ void setup() {
 
 void draw() {
   currentScene.drawScene();
-  //image(cursor, mouseX - cursor.width/2, mouseY - cursor.height/2);
 }
 
 // Input Events
