@@ -158,6 +158,7 @@ class Game implements Scene {
   void gameOver(int score) {
     color bg = color(33, 33, 33, (fade * 255));
     color text = color(231, 76, 60, (fade * 255));
+    color scoreText = color(255, 255, 255, (fade * 255));
 
     //System.out.println("Score : " + score);
     rectMode(CORNER);
@@ -168,6 +169,12 @@ class Game implements Scene {
     textSize(100);
     textAlign(CENTER, BOTTOM);
     text("GAME OVER", width/2, height/2 - 50);
+
+    fill(scoreText);
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("SCORE: " + (score * wave.difficulty), width/2, height/2 + 10);
+
 
     if (fade < 1) fade += 0.01;
   }

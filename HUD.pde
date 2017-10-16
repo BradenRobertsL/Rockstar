@@ -112,7 +112,7 @@ class HUD {
   void stats() {
     // Asteroids Left Counter
     pushMatrix();
-      translate(width - 82, 2);
+      translate(width - (204), 2);
 
       // Box
       fill(255, 255, 255);
@@ -123,7 +123,8 @@ class HUD {
       fill(blue);
       textAlign(LEFT, CENTER);
       textSize(20);
-      text(" x " + (game.asteroids.size() + game.wave.asteroidCount), 25, 8);
+      text("x", 28, 6);
+      text((game.asteroids.size() + game.wave.asteroidCount), 47, 8);
 
       // Icon
       translate(12,12);
@@ -148,7 +149,25 @@ class HUD {
       fill(blue);
       textAlign(CENTER, CENTER);
       textSize(20);
-      text("WAVE " + game.wave.currentWave, -1, 6);
+      text("WAVE " + game.wave.currentWave, -1, 7);
+    popMatrix();
+
+    // Score Counter
+    pushMatrix();
+      translate(width-92, 2);
+
+      // Box
+      fill(255, 255, 255);
+      rectMode(CORNER);
+      rect(0, 0, 90, 24);
+
+      // Label
+      String score = String.format("%07d", game.player.score * game.wave.difficulty);
+
+      fill(yellow);
+      textAlign(LEFT, CENTER);
+      textSize(20);
+      text(score, 2, 8);
     popMatrix();
   }
 }

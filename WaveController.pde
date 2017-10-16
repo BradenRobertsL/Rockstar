@@ -7,26 +7,27 @@ class WaveController {
 
   // Timers
   int finishedTime = millis();   // Time the last waved finished
-  int breakTime = 10;             // Time (seconds) in between waves
+  int breakTime = 10;            // Time (seconds) in between waves
 
   int spawnTime = millis();      // Time the last asteroid spawned
 
   // Wave stats
-  int difficulty     = 1;
+  int difficulty     = 1;        // Current game difficulty (Default: 1)
 
   int currentWave    = 1;
   int waveMultiplier = 1 + difficulty;
   int asteroidCount  = currentWave * waveMultiplier;
 
   float spawnTimeMultiplier = 3 - (currentWave * (0.1 * difficulty)); // Spawn rate
-  float sizeMultiplier = 1 + (currentWave * (0.4 * difficulty));   // Size cap
-  float speedMultiplier = 1.0 + (currentWave * (0.4 * difficulty));  // Speed cap
+  float sizeMultiplier = 1 + (currentWave * (0.2 * difficulty));      // Size cap
+  float speedMultiplier = 1.0 + (currentWave * (0.2 * difficulty));   // Speed cap
 
   float baseSize = 25;
   float baseSpeed = 1;
 
   // Special Events
-  float bigBoyChance = 0.20; // 20% chance to spawn a bigBoy asteroid (double size)
+  float bigBoyChance = 0.15;  // 15% chance to spawn a bigBoy asteroid (double size)
+  float powerUpChance = 0.10; // 10% chance to spawn any powerup
 
   WaveController(int difficulty, Game game) {
     this.difficulty = difficulty;
