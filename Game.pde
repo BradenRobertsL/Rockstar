@@ -174,8 +174,6 @@ class Game implements Scene {
     textSize(50);
     textAlign(CENTER, CENTER);
     text("SCORE: " + (score * wave.difficulty), width/2, height/2 + 10);
-
-
     if (fade < 1) fade += 0.01;
   }
 }

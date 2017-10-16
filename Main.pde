@@ -7,6 +7,10 @@ class Main implements Scene {
 
   int selectedButton = 0;
 
+  Button a;
+  Button b;
+  Button c;
+
   Main() {
 
     // Load assets
@@ -14,6 +18,10 @@ class Main implements Scene {
     buttonPlay = loadImage("assets/button_play.png");
     buttonExit = loadImage("assets/button_exit.png");
     buttonSelected = loadImage("assets/button_selected.png");
+
+    b = new Button(10, 10, "PLAY");
+    a = new Button(10, 300, "EXIT");
+    c = new Button(10, 90, "DIFFICULTY: EASY");
   }
 
   // Main scene loop
@@ -46,12 +54,16 @@ class Main implements Scene {
       else
         exit();
     }
+
+    a.render();
+    b.render();
+    c.render();
   }
 
   // Mouse handlers
   void onMouseClick() {
     if (mouseInsideButton(buttonPlay, 400))
-      currentScene = game;
+      currentScene = new Game();
     if (mouseInsideButton(buttonExit, 550))
       exit();
   }
@@ -72,6 +84,5 @@ class Main implements Scene {
 
     // Not inside
     return false;
-
   }
 }

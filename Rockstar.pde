@@ -19,8 +19,7 @@ void setup() {
   frameRate(30);
 
   mainMenu = new Main();
-  game = new Game();
-
+  
   currentScene = mainMenu;
 }
 
