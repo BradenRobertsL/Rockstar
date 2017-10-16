@@ -47,6 +47,7 @@ class Asteroid extends Entity {
 
   void damage(int d){
     health -= d;
+    size -= d/4;
   }
 
   void destroy(boolean player){
@@ -55,7 +56,8 @@ class Asteroid extends Entity {
   }
 
   boolean checkOverlap (Entity target) {
-    if (Math.hypot(position.x-target.position.x, position.y-target.position.y) < size/2) {
+
+    if (target.position.dist(position) < (size/2)) {
       return true;
     }
     return false;

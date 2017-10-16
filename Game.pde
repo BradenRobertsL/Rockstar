@@ -12,11 +12,13 @@ class Game implements Scene {
   PImage starImage;
   PImage shipImage1;
   PImage boostImage1;
+  PImage bulletImage;
 
   Game() {
 
     // Load assets
     starImage = loadImage("assets/star.png");
+    bulletImage = loadImage("assets/bullet.png");
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
 

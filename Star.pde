@@ -7,6 +7,10 @@ class Star extends Entity {
   PImage star;
   PVector position = new PVector(width/2, height/2);
 
+  // Health bar colors from green to red
+  color green = color(46,204,113);
+  color red = color(231,76,60);
+
   Star(Game game) {
     this.star = game.starImage;
     this.game = game;
@@ -16,12 +20,14 @@ class Star extends Entity {
     pushMatrix();
       translate(position.x - star.width/2, position.y - star.height/2);
       image(star, 0, 0);
+    popMatrix();
 
-      // Health Bar
+    // Draw healthbar
+    pushMatrix();
       fill(255,255,255);
       rectMode(CORNER);
       rect(0, - 20, star.width, 10);
-      fill(0, 255, 0);
+      fill(lerpColor(red, green, (float) health/maxHealth));
       if (health > 0) rect(2, - 18, (float) health/1000 * (star.width-4), 6);
       fill(255, 255, 255);
       textAlign(CENTER);
@@ -30,6 +36,7 @@ class Star extends Entity {
   }
 
   void update() {
+    constrain(health, 0, maxHealth);
     if (health <= 0) {
       game.alive = false;
     }

@@ -20,18 +20,10 @@ class Bullet extends Entity {
 
   void render() {
     if (active) {
-      fill(255,0,0);
-      rect(position.x, position.y, 10, 10);
-
       pushMatrix();
-        rectMode(CENTER);
-        fill(255);
-        noStroke();
         translate(position.x,position.y);
         rotate(angle);
-        rect(0, 0, bHeight, bWidth);
-
-
+        image(game.bulletImage, -game.bulletImage.width/2, -game.bulletImage.height/2);
       popMatrix();
     }
   }
