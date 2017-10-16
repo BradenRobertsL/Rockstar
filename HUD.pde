@@ -12,9 +12,9 @@ class HUD {
   color white = color(236,240,241);
   color silver = color(189,195,199);
 
-  float angle = 0;
+  float angle = 0;  // Angle for rotating asteroid icon.
 
-  int rounding = 5; // Box rounding value
+  int rounding = 5; // Box rounding value.
 
   HUD (Game _game) {
     game = _game;
@@ -22,10 +22,9 @@ class HUD {
     player = game.player;
   }
 
-  // Draws all HUD components
+  // Draws all HUD components.
   void drawHUD() {
     pushMatrix();
-    //translate(0, height-54);
       healthBar();
       xpBar();
       level();
@@ -38,30 +37,30 @@ class HUD {
     pushMatrix();
       translate(2,2);
 
-      // Box
+      // Box.
       rectMode(CORNER);
       fill(255, 255, 255);
       rect(0, 0, 50, 50, rounding);
 
-      // Level
+      // Level.
       fill(blue);
       textSize(32);
       textAlign(CENTER, CENTER);
       text(player.level, 25, 17);
 
-      // Label
+      // Label.
       textSize(10);
       textAlign(CENTER, BOTTOM);
       text("Level", 26, 50);
     popMatrix();
   }
 
-  // Draw health bar
+  // Draw health bar.
   void healthBar() {
     pushMatrix();
       translate(54, 2);
 
-      // Box
+      // Box.
       fill(255,255,255);
       rectMode(CORNER);
       rect(0, 0, 250, 24, rounding);
@@ -69,8 +68,8 @@ class HUD {
       fill(silver);
       rect(2, 2, 250-4, 24-4, rounding);
 
-      // Bar
-      // Calculate percentage of health and set color accordingly
+      // Bar.
+      // Calculate percentage of health and set color accordingly.
       if (star.health > star.maxHealth/2)
         fill(lerpColor(yellow, green, (float) (star.health-(star.maxHealth/2))/(star.maxHealth/2)));
       else
@@ -78,19 +77,19 @@ class HUD {
 
       if (star.health > 0) rect(2, 2, (float) star.health/star.maxHealth * (250-4), 24-4, rounding);
 
-      // Label
+      // Label.
       textSize(10);
       fill(white);
       text("Star health: " + star.health + "/" + star.maxHealth , 250/2 , 24/2+4);
     popMatrix();
   }
 
-  // Draw xp bar
+  // Draw xp bar.
   void xpBar() {
     pushMatrix();
       translate(54, 28);
 
-      // Box
+      // Box.
       fill(255,255,255);
       rectMode(CORNER);
       rect(0, 0, 250, 24, rounding);
@@ -98,30 +97,30 @@ class HUD {
       fill(silver);
       rect(2, 2, 250-4, 24-4, rounding);
 
-      // Bar
+      // Bar.
       fill(blue);
       if (star.health > 0) rect(2, 2, (float) player.xp/player.xpToLevel * (250-4), 24-4, rounding);
       fill(255, 255, 255);
 
-      // Label
+      // Label.
       textSize(10);
       fill(white);
       text("Experience: " + Math.round(player.xp) + "/" + player.xpToLevel , 250/2 , 24/2+4);
     popMatrix();
   }
 
-  // Draw stats box
+  // Draw stats box.
   void stats() {
-    // Asteroids Left Counter
+    // Asteroids Left Counter.
     pushMatrix();
       translate(width - (168), 2);
 
-      // Box
+      // Box.
       fill(255, 255, 255);
       rectMode(CORNER);
       rect(0, 0, 80, 24, rounding);
 
-      // Label
+      // Label.
       String aLeft = String.format("%02d", (game.asteroids.size() + game.wave.asteroidCount));
 
       fill(blue);
@@ -130,7 +129,7 @@ class HUD {
       text("x", 30, 6.5);
       text(aLeft, 47, 8);
 
-      // Icon
+      // Icon.
       translate(12,12);
       pushMatrix();
         rotate(angle);
@@ -141,32 +140,32 @@ class HUD {
       popMatrix();
     popMatrix();
 
-    // Wave Counter
+    // Wave Counter.
     pushMatrix();
       translate(width/2 , 2);
 
-      // Box
+      // Box.
       fill(255, 255, 255);
       rectMode(CORNER);
       rect(-50, 0, 100, 24, rounding);
 
-      // Label
+      // Label.
       fill(blue);
       textAlign(CENTER, CENTER);
       textSize(20);
       text("WAVE " + game.wave.currentWave, -1, 8.5);
     popMatrix();
 
-    // Score Counter
+    // Score Counter.
     pushMatrix();
       translate(width-86, 2);
 
-      // Box
+      // Box.
       fill(255, 255, 255);
       rectMode(CORNER);
       rect(0, 0, 84, 24, rounding);
 
-      // Label
+      // Label.
       String score = String.format("%07d", game.player.score * game.wave.difficulty);
 
       fill(yellow);

@@ -2,32 +2,32 @@ class WaveController {
 
   Game game;
 
-  // Triggers
+  // Triggers.
   boolean waveEnded = false;
 
-  // Timers
-  int finishedTime = millis();   // Time the last waved finished
-  int breakTime = 10;            // Time (seconds) in between waves
+  // Timers.
+  int finishedTime = millis();   // Time the last waved finished.
+  int breakTime = 5;             // Time (seconds) in between waves.
+  int spawnTime = millis();      // Time the last asteroid spawned..
 
-  int spawnTime = millis();      // Time the last asteroid spawned
-
-  // Wave stats
+  // Wave stats.
   int difficulty     = 1;        // Current game difficulty (Default: 1)
 
   int currentWave    = 1;
   int waveMultiplier = 1 + difficulty;
   int asteroidCount  = currentWave * waveMultiplier;
 
-  float spawnTimeMultiplier = 3 - (currentWave * (0.1 * difficulty)); // Spawn rate
-  float sizeMultiplier = 1 + (currentWave * (0.2 * difficulty));      // Size cap
-  float speedMultiplier = 1.0 + (currentWave * (0.2 * difficulty));   // Speed cap
+  float spawnTimeMultiplier = 3 - (currentWave * (0.1 * difficulty)); // Spawn rate.
+  float sizeMultiplier = 1 + (currentWave * (0.2 * difficulty));      // Size cap.
+  float speedMultiplier = 1.0 + (currentWave * (0.2 * difficulty));   // Speed cap.
 
+  // Base asteroid stats.
   float baseSize = 25;
   float baseSpeed = 1;
 
-  // Special Events
-  float bigBoyChance = 0.15;  // 15% chance to spawn a bigBoy asteroid (double size)
-  float powerUpChance = 0.10; // 10% chance to spawn any powerup
+  // Special Events.
+  float bigBoyChance = 0.15;  // 15% chance to spawn a bigBoy asteroid (double size).
+  float powerUpChance = 0.10; // 10% chance to spawn any powerup.
 
   WaveController(int difficulty, Game game) {
     this.difficulty = difficulty;
@@ -36,10 +36,9 @@ class WaveController {
     System.out.println("Wave " + currentWave + " starting!!");
   }
 
-  // Handles waves and timing
+  // Handles waves and timing.
   void play() {
-
-    // Wave finished
+    // Wave finished.
     if (waveEnded && (millis() - finishedTime > breakTime * 1000)) {
       nextWave();
       System.out.println("Wave " + currentWave + " starting!!");
@@ -49,53 +48,49 @@ class WaveController {
     if (!waveEnded) {
       wave();
     }
-
-    textAlign(CENTER);
-    fill(255, 255 - currentWave * 25, 255 - currentWave * 25);
-
   }
 
-  // Sets up next wave
+  // Sets up next wave.
   void nextWave() {
     currentWave++;
 
-    // Star regen health
+    // Star regen health.
     game.star.regen();
 
-    // Refresh wave stats
+    // Refresh wave stats.
     asteroidCount  = currentWave * waveMultiplier;
 
-    spawnTimeMultiplier = 3 - (currentWave * (0.1 * difficulty)); // Spawn rate
-    sizeMultiplier = 1.0 + (currentWave * (0.4 * difficulty));   // Size cap
-    speedMultiplier = 1.0 + (currentWave * (0.4 * difficulty));  // Speed cap
+    spawnTimeMultiplier = 3 - (currentWave * (0.1 * difficulty)); // Spawn rate.
+    sizeMultiplier = 1.0 + (currentWave * (0.4 * difficulty));   // Size cap.
+    speedMultiplier = 1.0 + (currentWave * (0.4 * difficulty));  // Speed cap.
   }
 
   void wave() {
 
-    // Check if wave is cleared
+    // Check if wave is cleared.
     if (asteroidCount <= 0 && game.asteroids.size() == 0) {
       waveEnded = true;
       finishedTime = millis();
       return;
     }
 
-    // Spawn asteroid if ready
+    // Spawn asteroid if ready.
     if (millis() - spawnTime > spawnTimeMultiplier * 1000) {
       spawnAsteroid();
       spawnTime = millis();
     }
   }
 
-  // Spawn new random asteroid
+  // Spawn new random asteroid.
   void spawnAsteroid() {
     if (asteroidCount > 0) {
       float xPos, yPos;
       int bigBoySpawn = Math.random() < bigBoyChance ? 2 : 1;
 
-      // Calculate side
+      // Calculate side.
       int side = (int) Math.floor(Math.random() * 4);
 
-      // Randomize
+      // Randomize.
       if (side == 0) {
         xPos = 0;
         yPos = (float) Math.floor(Math.random() * height);

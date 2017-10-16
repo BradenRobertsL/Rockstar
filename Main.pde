@@ -2,25 +2,25 @@ class Main implements Scene {
 
   PImage header;
 
-  ArrayList<Button> menu;
+  ArrayList<Button> menu; // Book keeping buttons in menu.
 
+  // Buttons
   Button play;
   Button difficulty;
   Button exit;
 
-  int dLevel = 1;         // Difficulty int level (default 1 - easy)
-  String dText = "EASY";  // Difficulty button text
+  int dLevel = 1;         // Difficulty int level (default 1 - easy).
+  String dText = "EASY";  // Difficulty button text.
 
   Main() {
-
-    // Load assets
+    // Load assets.
     header = loadImage("assets/header.png");
 
     play = new Button(width/2, height/2 - 40, "PLAY");
     exit = new Button(width/2, height/2 + 160, "EXIT");
     difficulty = new Button(width/2, height/2 + 60, "DIFFICULTY: " + dText);
 
-    // Initiate menu
+    // Initiate menu.
     menu = new ArrayList<Button>();
 
     menu.add(play);
@@ -28,9 +28,8 @@ class Main implements Scene {
     menu.add(exit);
   }
 
-  // Main scene loop
+  // Main scene loop.
   void drawScene() {
-    //background(52,73,94);
     background(41,128,185);
 
     image(header, width/2 - header.width/2, 100);
@@ -40,7 +39,7 @@ class Main implements Scene {
     exit.render();
   }
 
-  // Check for clicks on buttons
+  // Check for clicks on buttons and reacts accordingly.
   void onMouseClick() {
     for (Button b : menu) {
       if (b.onButton) {
@@ -59,6 +58,7 @@ class Main implements Scene {
     }
   }
 
+  // Sets the difficulty and updates button accordingly.
   void setDifficulty() {
     switch (dLevel) {
       case 1:

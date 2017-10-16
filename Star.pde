@@ -1,6 +1,7 @@
 class Star extends Entity {
 
-  int maxHealth = 10;
+  // Stats.
+  int maxHealth = 0;
   int health = constrain(maxHealth, 0, maxHealth);
   float size = 100;
 
@@ -15,6 +16,7 @@ class Star extends Entity {
     health = constrain(maxHealth, 0, maxHealth);
   }
 
+  // Draws the star.
   void render() {
     pushMatrix();
       translate(position.x - star.width/2, position.y - star.height/2);
@@ -22,6 +24,7 @@ class Star extends Entity {
     popMatrix();
   }
 
+  // Updates health values and checks if star is dead.
   void update() {
     constrain(health, 0, maxHealth);
     if (health <= 0) {
@@ -29,11 +32,12 @@ class Star extends Entity {
     }
   }
 
+  // Applies damage to star.
   void damage(int d) {
     health = health - d;
   }
 
-  // Health regen per round
+  // Health regenerated per wave end.
   void regen() {
     if (health < maxHealth) health = constrain(health += game.player.level * 50, 0, maxHealth);
   }

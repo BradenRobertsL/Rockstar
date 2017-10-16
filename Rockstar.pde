@@ -1,39 +1,38 @@
-// Game scenes
+// Game scenes.
 Scene mainMenu;
 Scene game;
-Scene currentScene;
+Scene currentScene; // Scene visible.
 
-// Input Booleans
+// Input Booleans.
 boolean up = false;
 boolean down = false;
 boolean left = false;
 boolean right = false;
 boolean fire = false;
-
 boolean enter = false;
 
 void setup() {
 
   size(1360, 765);
-  //fullScreen();
   frameRate(30);
 
   mainMenu = new Main();
-
   currentScene = mainMenu;
 }
 
+// Draws the current scene.
 void draw() {
   currentScene.drawScene();
 }
 
-// Input Events
+// Input Events passed on to current scene.
 void mouseClicked() { currentScene.onMouseClick(); }
 void mouseDragged() { currentScene.onMouseDrag(); }
 void mouseMoved() { currentScene.onMouseMoved(); }
 
+// Checks for key pressed.
 void keyPressed() {
-  // Checking key input
+  // Checking key input.
   if (key != CODED) {
     switch (key) {
       case 'w':
@@ -70,9 +69,9 @@ void keyPressed() {
   }
 }
 
+// Checks for key released.
 void keyReleased() {
-
-  // Checking key input
+  // Checking key input.
   if (key != CODED) {
 
     switch (key) {

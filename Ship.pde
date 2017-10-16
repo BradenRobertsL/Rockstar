@@ -1,37 +1,37 @@
 class Ship extends Entity {
 
+  // Ship size.
   int sWidth  = 50;
   int sLength = 30;
 
   boolean boosting = false;
 
-  // Movement Variables
+  // Movement Variables.
   PVector position;
   PVector direction;
   PVector velocity = new PVector(0, 0);
 
-  float fric  = 0.95;  // Friction in movement (1 being no friction and 0.1 being alot)
-  float force = 1; // Strength of rocket booster
+  float fric  = 0.95;  // Friction in movement (1 being no friction and 0.1 being alot).
+  float force = 1;     // Strength of rocket booster.
 
-  int score = 0; // Players score (Total xp gained)
+  int score = 0;        // Players score (Total xp gained).
 
-  // Stats
-  int level = 1; // Level of ship
-  float xpToLevel = 200 * level; // Amount of xp needed to level up
+  // Stats.
+  int level = 1;                          // Level of ship.
+  float xpToLevel = 200 * level;          // Amount of xp needed to level up.
   float xp = 0;
-  float damage = 20 + (level * 5); // Bullet damage on hit, scales with level
-  float attackSpeed = 1 + (level * 0.75); // Attacks per second
-  float health = 50 + (level * 2); // Max health points
-  float upgradeLevel = 0; // Level of upgrades the ship has
+  float damage = 20 + (level * 5);        // Bullet damage on hit, scales with level.
+  float attackSpeed = 1 + (level * 0.75); // Attacks per second.
+  float health = 50 + (level * 2);        // Max health points.
+  float upgradeLevel = 0;                 // Level of upgrades the ship has.
 
-  // Shooting timers
+  // Shooting timers.
   long lastShot;
   boolean fire = false;
 
   PImage ship;
   PImage boost;
 
-  // Constructor
   Ship (float x, float y, Game game) {
     position = new PVector(x,y);
     direction = new PVector(mouseX, mouseY).sub(position);
@@ -41,27 +41,24 @@ class Ship extends Entity {
     boost = game.boostImage1;
   }
 
-  // Draws ship and attatchments/effects
+  // Draws ship and attatchments/effects.
   void render() {
     fill(200);
     noStroke();
 
-    // Calculating direction to face towards mouse
+    // Calculating direction to face towards mouse.
     PVector direction = new PVector(mouseX, mouseY).sub(position);
     float angle = atan2(direction.y, direction.x);
 
     pushMatrix();
       translate(position.x, position.y);
       rotate(angle);
-
-      // Draw boost
+      // Draw boost.
       if (boosting && keyPressed)
         image(boost, -sLength/2-11, -sWidth/2 - 1);
-      // Draw ship
+      // Draw ship.
       image(ship, -sLength/2, -sWidth/2);
     popMatrix();
-
-
   }
 
   // Updates the ships position and applies friction.
@@ -74,7 +71,7 @@ class Ship extends Entity {
     }
   }
 
-  // Moves the ship in specified direction
+  // Moves the ship in specified direction.
   void move(String dir) {
     direction = new PVector(mouseX, mouseY).sub(position);
 
@@ -89,19 +86,20 @@ class Ship extends Entity {
     }
   }
 
-  // Shoots a bullet
+  // Shoots a bullet.
   void fire() {
-    // Check if cool down is complete
+    // Check if cool down is complete.
     long timeSince = millis() - lastShot;
 
     if (timeSince > (60 / attackSpeed) * 10) {
 
       if (upgradeLevel == 0) {
-        // Spawn bullet in correct position/direction
+        // Spawn bullet in correct position/direction.
         PVector dir = new PVector(mouseX, mouseY).sub(position).normalize().mult(2);
         game.addBullet(position.x + dir.x, position.y + dir.y);
       }
 
+      // Upgraded ship gun.
       if (upgradeLevel > 0) {
         // Double barrel!
         PVector left = new PVector(mouseX, mouseY).sub(position).rotate(90).normalize().mult(10);
@@ -114,23 +112,29 @@ class Ship extends Entity {
         game.addBullet(rightGun.x, rightGun.y);
       }
 
-      // Reset timer and input
+      // Reset timer and input.
       fire = false;
       lastShot = millis();
     }
 
-    // Reset input if couldn't shoot
+    // Reset input if couldn't shoot.
     fire = false;
   }
 
+  // Increases ship xp level and updates stats.
   void gainXP (float xp_) {
     xp += xp_;
     score += xp_;
     System.out.println("Gained " + xp_ + " xp");
     // If xp is at the required amount to level. levelUP.
-    if (xp >= xpToLevel) levelUp();
+    if (xp >= xpToLevel) {
+      int leftOverXP = xp - xpToLevel;
+      levelUp();
+      xp = leftOverXP;
+    }
   }
 
+  // Levels up ship and updates stats.
   void levelUp() {
     xp = 0;
     level++;
@@ -144,7 +148,7 @@ class Ship extends Entity {
     }
   }
 
-// Updates the ships stats to correct values according to level
+  // Updates the ships stats to correct values according to level.
   void updateStats() {
     xpToLevel = 200 * level;
     damage = 20 + (level * 5);

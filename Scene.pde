@@ -1,8 +1,8 @@
 interface Scene {
-  // Main scene loop
+  // Main scene loop.
   void drawScene();
-  
-  // Mouse handlers
+
+  // Mouse handlers.
   void onMouseClick();
   void onMouseDrag();
   void onMouseRelease();
