@@ -25,20 +25,16 @@ class Asteroid extends Entity {
   void render() {
     if (active) {
       pushMatrix();
-        noStroke();
-        fill(255, 20, 20);
-        //rectMode(RADIUS);
         translate(position.x, position.y);
         rotate(angle);
-        ellipse(0, 0, size/2, size/2);
-        fill(255, 255, 255);
-        text(health, 0, 0);
+        scale((size/2)/100);
+        image(game.asteroidImage, -game.asteroidImage.width/2, -game.asteroidImage.height/2);
       popMatrix();
     }
   }
 
   void update() {
-    angle += 0.01;
+    angle += 0.02;
     position.add(direction.normalize().mult(speed));
 
     if (health <= 0 && active)

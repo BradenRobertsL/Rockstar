@@ -48,7 +48,7 @@ class Ship extends Entity {
 
       // Draw boost
       if (boosting && keyPressed)
-        image(game.boostImage1, -sLength/2-11, -sWidth/2 - 2);
+        image(game.boostImage1, -sLength/2-11, -sWidth/2 - 1);
       // Draw ship
       image(game.shipImage1, -sLength/2, -sWidth/2);
     popMatrix();

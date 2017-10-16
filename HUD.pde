@@ -10,6 +10,7 @@ class HUD {
   color yellow = color(241,196,15);
   color blue = color(52,152,219);
   color white = color(236,240,241);
+  color silver = color(189,195,199);
 
   HUD (Game _game) {
     game = _game;
@@ -60,8 +61,16 @@ class HUD {
       rectMode(CORNER);
       rect(0, 0, 250, 24);
 
+      fill(silver);
+      rect(2, 2, 250-4, 24-4);
+
       // Bar
-      if (star.health > star.maxHealth/2) fill(lerpColor(yellow, green, (float) (star.health/star.maxHealth/2)));
+      // Calculate percentage of health and set color accordingly
+      if (star.health > star.maxHealth/2)
+        fill(lerpColor(yellow, green, (float) (star.health-(star.maxHealth/2))/(star.maxHealth/2)));
+      else
+        fill(lerpColor(red, yellow, (float) (star.health)/(star.maxHealth/2)));
+
       if (star.health > 0) rect(2, 2, (float) star.health/star.maxHealth * (250-4), 24-4);
 
       // Label
@@ -80,6 +89,9 @@ class HUD {
       fill(255,255,255);
       rectMode(CORNER);
       rect(0, 0, 250, 24);
+
+      fill(silver);
+      rect(2, 2, 250-4, 24-4);
 
       // Bar
       fill(blue);

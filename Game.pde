@@ -15,6 +15,7 @@ class Game implements Scene {
   PImage shipImage1;
   PImage boostImage1;
   PImage bulletImage;
+  PImage asteroidImage;
 
   PFont opensans;
 
@@ -25,6 +26,7 @@ class Game implements Scene {
     bulletImage = loadImage("assets/bullet.png");
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
+    asteroidImage = loadImage("assets/asteroid.png");
 
     opensans = createFont("assets/OpenSans-SemiBold.ttf", 32);
 
