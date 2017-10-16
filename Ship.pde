@@ -22,15 +22,23 @@ class Ship extends Entity {
   float damage = 20 + (level * 5); // Bullet damage on hit, scales with level
   float attackSpeed = 1 + (level * 0.75); // Attacks per second
   float health = 50 + (level * 2); // Max health points
+  float upgradeLevel = 0; // Level of upgrades the ship has
 
   // Shooting timers
   long lastShot;
   boolean fire = false;
 
+  PImage ship;
+  PImage boost;
+
   // Constructor
   Ship (float x, float y, Game game) {
     position = new PVector(x,y);
+    direction = new PVector(mouseX, mouseY).sub(position);
     this.game = game;
+
+    ship = game.shipImage1;
+    boost = game.boostImage1;
   }
 
   // Draws ship and attatchments/effects
@@ -39,8 +47,8 @@ class Ship extends Entity {
     noStroke();
 
     // Calculating direction to face towards mouse
-    PVector dir = new PVector(mouseX, mouseY).sub(position);
-    float angle = atan2(dir.y, dir.x);
+    PVector direction = new PVector(mouseX, mouseY).sub(position);
+    float angle = atan2(direction.y, direction.x);
 
     pushMatrix();
       translate(position.x, position.y);
@@ -48,9 +56,9 @@ class Ship extends Entity {
 
       // Draw boost
       if (boosting && keyPressed)
-        image(game.boostImage1, -sLength/2-11, -sWidth/2 - 1);
+        image(boost, -sLength/2-11, -sWidth/2 - 1);
       // Draw ship
-      image(game.shipImage1, -sLength/2, -sWidth/2);
+      image(ship, -sLength/2, -sWidth/2);
     popMatrix();
 
 
@@ -87,9 +95,24 @@ class Ship extends Entity {
     long timeSince = millis() - lastShot;
 
     if (timeSince > (60 / attackSpeed) * 10) {
-      // Spawn bullet in correct position/direction
-      PVector dir = new PVector(mouseX, mouseY).sub(position).normalize().mult(2);
-      game.addBullet(position.x + dir.x, position.y + dir.y);
+
+      if (upgradeLevel == 0) {
+        // Spawn bullet in correct position/direction
+        PVector dir = new PVector(mouseX, mouseY).sub(position).normalize().mult(2);
+        game.addBullet(position.x + dir.x, position.y + dir.y);
+      }
+
+      if (upgradeLevel > 0) {
+        // Double barrel!
+        PVector left = new PVector(mouseX, mouseY).sub(position).rotate(90).normalize().mult(10);
+        PVector right = new PVector(mouseX, mouseY).sub(position).rotate(-90).normalize().mult(10);
+
+        PVector leftGun = new PVector(position.x, position.y).add(left);
+        PVector rightGun = new PVector(position.x, position.y).add(right);
+
+        game.addBullet(leftGun.x, leftGun.y);
+        game.addBullet(rightGun.x, rightGun.y);
+      }
 
       // Reset timer and input
       fire = false;
@@ -113,6 +136,12 @@ class Ship extends Entity {
     level++;
     System.out.println("Levelled up to " + level + "!");
     updateStats();
+
+    if (level >= 12/game.wave.difficulty && upgradeLevel == 0) {
+      ship = game.shipImage2;
+      boost = game.boostImage2;
+      upgradeLevel++;
+    }
   }
 
 // Updates the ships stats to correct values according to level

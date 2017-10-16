@@ -5,7 +5,7 @@ class Bullet extends Entity {
   float bHeight = 10;
 
   // Bullet stats
-  float speed = 20;
+  float speed = 25;
   int damage = 50;
 
   PVector direction;  // Direction the bullet should move
@@ -21,9 +21,12 @@ class Bullet extends Entity {
   void render() {
     if (active) {
       pushMatrix();
-        translate(position.x,position.y);
-        rotate(angle);
-        image(game.bulletImage, -game.bulletImage.width/2, -game.bulletImage.height/2);
+        translate(position.x, position.y);
+        pushMatrix();
+          rotate(angle);
+          translate(-game.bulletImage.width/2, -game.bulletImage.height/2);
+          image(game.bulletImage, 0, 0);
+        popMatrix();
       popMatrix();
     }
   }

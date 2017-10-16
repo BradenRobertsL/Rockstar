@@ -24,12 +24,18 @@ class Asteroid extends Entity {
 
   void render() {
     if (active) {
+      fill(255);
+
       pushMatrix();
         translate(position.x, position.y);
-        rotate(angle);
-        scale((size/2)/100);
-        image(game.asteroidImage, -game.asteroidImage.width/2, -game.asteroidImage.height/2);
+        pushMatrix();
+          scale((size/2)/100);
+          rotate(angle);
+          translate(-game.asteroidImage.width/2, -game.asteroidImage.height/2);
+          image(game.asteroidImage, 0, 0);
+        popMatrix();
       popMatrix();
+
     }
   }
 

@@ -13,9 +13,13 @@ class Game implements Scene {
   // Assets
   PImage starImage;
   PImage shipImage1;
+  PImage shipImage2;
   PImage boostImage1;
+  PImage boostImage2;
   PImage bulletImage;
   PImage asteroidImage;
+  PImage powerupHealImage;
+  PImage powerupShieldImage;
 
   PImage asteroidIcon;
 
@@ -31,9 +35,14 @@ class Game implements Scene {
     starImage = loadImage("assets/star.png");
     bulletImage = loadImage("assets/bullet.png");
     shipImage1 = loadImage("assets/ship_1.png");
+    shipImage2 = loadImage("assets/ship_2.png");
     boostImage1 = loadImage("assets/boost_1.png");
+    boostImage2 = loadImage("assets/boost_2.png");
     asteroidImage = loadImage("assets/asteroid.png");
     asteroidIcon = loadImage("assets/asteroidIcon.png");
+    powerupHealImage = loadImage("assets/powerup_heal.png");
+    powerupShieldImage = loadImage("assets/powerup_shield.png");
+
     opensans = createFont("assets/OpenSans-SemiBold.ttf", 32);
 
     // Set loadFont
