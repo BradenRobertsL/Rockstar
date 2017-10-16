@@ -41,6 +41,6 @@ class Star extends Entity {
 
   // Health regen per round
   void regen() {
-    health += game.player.level * 10;
+    if (health < maxHealth) health = constrain(health += game.player.level * 50, 0, maxHealth);
   }
 }

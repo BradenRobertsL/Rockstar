@@ -12,7 +12,9 @@ class Ship extends Entity {
   PVector velocity = new PVector(0, 0);
 
   float fric  = 0.95;  // Friction in movement (1 being no friction and 0.1 being alot)
-  float force = 1;    // Strength of rocket booster
+  float force = 1; // Strength of rocket booster
+
+  int score = 0; // Players score (Total xp gained)
 
   // Stats
   int level = 1; // Level of ship
@@ -101,6 +103,8 @@ class Ship extends Entity {
 
   void gainXP (float xp_) {
     xp += xp_;
+    score += xp_;
+    System.out.println("Gained " + xp_ + " xp");
     // If xp is at the required amount to level. levelUP.
     if (xp >= xpToLevel) levelUp();
   }
@@ -108,7 +112,7 @@ class Ship extends Entity {
   void levelUp() {
     xp = 0;
     level++;
-
+    System.out.println("Levelled up to " + level + "!");
     updateStats();
   }
 

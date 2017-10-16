@@ -41,21 +41,21 @@ class Asteroid extends Entity {
     angle += 0.01;
     position.add(direction.normalize().mult(speed));
 
-    if (health <= 0)
-      active = false;
+    if (health <= 0 && active)
+      destroy(true);
   }
 
   void damage(int d){
     health -= d;
   }
 
-  void destroy(){
+  void destroy(boolean player){
+    if (player) game.player.gainXP(xp);
     active = false;
-    game.player.gainXP(xp);
   }
 
   boolean checkOverlap (Entity target) {
-    if (Math.pow(target.position.x - position.x, 2.0) + Math.pow(target.position.y - position.y, 2.0) < Math.pow(size/2, 2.0)) {
+    if ((target.position.x - position.x) + (target.position.y - position.y) < (size/2)) {
       return true;
     }
     return false;

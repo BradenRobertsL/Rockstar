@@ -49,8 +49,6 @@ class Game implements Scene {
     render(bullets);
     player.render();
 
-
-
     // Check movement
     if (up && alive) {
       player.move("forward");
@@ -61,6 +59,10 @@ class Game implements Scene {
     }
     if (mousePressed && alive)
       player.fire = true;
+
+    // Check game over
+    if (!alive)
+      gameOver(player.score);
   }
 
   // Mouse handlers
@@ -110,7 +112,7 @@ class Game implements Scene {
         boolean collided = a.checkOverlap(b);
         if (collided) {
           a.damage(b.getDamage());
-          b.destroy();
+          b.destroy(true);
         }
       }
     }
@@ -121,8 +123,12 @@ class Game implements Scene {
       if (abs(a.position.x - star.position.x) < (a.size/2 + star.size/2) && abs(a.position.y - star.position.y) < (a.size/2 + star.size/2)) {
         star.damage(a.getHealth());
         System.out.println(a.getHealth());
-        a.destroy();
+        a.destroy(false);
       }
     }
+  }
+
+  void gameOver(int score) {
+    System.out.println("Score : " + score);
   }
 }

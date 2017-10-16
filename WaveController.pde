@@ -51,7 +51,7 @@ class WaveController {
 
     textAlign(CENTER);
     fill(255, 255 - currentWave * 25, 255 - currentWave * 25);
-    text("Difficulty: " + difficulty + " | Wave: " + currentWave + " | Asteroids left: " + (asteroidCount + game.asteroids.size()), width/2, 40);
+    text("Difficulty: " + difficulty + " | Wave: " + currentWave + " | Asteroids left: " + (asteroidCount + game.asteroids.size()) + " | Level: " + game.player.level + " | Score: " + game.player.score, width/2, 40);
 
   }
 
