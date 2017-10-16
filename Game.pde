@@ -10,10 +10,13 @@ class Game implements Scene {
   ArrayList<Entity> bullets = new ArrayList<Entity>();
   ArrayList<Entity> asteroids = new ArrayList<Entity>();
 
+  // Assets
   PImage starImage;
   PImage shipImage1;
   PImage boostImage1;
   PImage bulletImage;
+
+  PFont opensans;
 
   Game() {
 
@@ -22,6 +25,11 @@ class Game implements Scene {
     bulletImage = loadImage("assets/bullet.png");
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
+
+    opensans = createFont("assets/OpenSans-SemiBold.ttf", 32);
+
+    // Set loadFont
+    textFont(opensans);
 
     wave = new WaveController(2, this);
     star = new Star(this);
