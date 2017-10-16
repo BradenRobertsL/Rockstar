@@ -1,3 +1,4 @@
 build/**
 application.windows32/**
 application.windows64/**
+builds/**

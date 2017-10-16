@@ -17,6 +17,8 @@ class Game implements Scene {
   PImage bulletImage;
   PImage asteroidImage;
 
+  PImage asteroidIcon;
+
   PFont opensans;
 
   // Game over
@@ -30,6 +32,8 @@ class Game implements Scene {
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
     asteroidImage = loadImage("assets/asteroid.png");
+
+    asteroidIcon = loadImage("assets/asteroidIcon.png");
 
     opensans = createFont("assets/OpenSans-SemiBold.ttf", 32);
 
@@ -126,6 +130,7 @@ class Game implements Scene {
     return cleanList;
   }
 
+  // Checks any asteroids being hit by bullets
   void checkBulletCollision() {
     for (Entity a : asteroids) {
       for (Entity b : bullets) {
@@ -138,6 +143,7 @@ class Game implements Scene {
     }
   }
 
+  // Checks any asteroids crashing into planet
   void checkPlanetCollision() {
     for (Entity a : asteroids) {
       if (abs(a.position.x - star.position.x) < (a.size/2 + star.size/2) && abs(a.position.y - star.position.y) < (a.size/2 + star.size/2)) {
@@ -148,6 +154,7 @@ class Game implements Scene {
     }
   }
 
+  // Renders game over screen calculates score
   void gameOver(int score) {
     color bg = color(33, 33, 33, (fade * 255));
     color text = color(231, 76, 60, (fade * 255));

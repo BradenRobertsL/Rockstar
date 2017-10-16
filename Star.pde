@@ -10,6 +10,9 @@ class Star extends Entity {
   Star(Game game) {
     this.star = game.starImage;
     this.game = game;
+
+    maxHealth = game.wave.difficulty * 200;
+    health = constrain(maxHealth, 0, maxHealth);
   }
 
   void render() {

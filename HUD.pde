@@ -12,6 +12,8 @@ class HUD {
   color white = color(236,240,241);
   color silver = color(189,195,199);
 
+  float angle = 0;
+
   HUD (Game _game) {
     game = _game;
     star = game.star;
@@ -21,10 +23,11 @@ class HUD {
   // Draws all HUD components
   void drawHUD() {
     pushMatrix();
-    translate(0, height-54);
+    //translate(0, height-54);
       healthBar();
       xpBar();
       level();
+      stats();
     popMatrix();
   }
 
@@ -102,6 +105,50 @@ class HUD {
       textSize(10);
       fill(white);
       text("Experience: " + player.xp + "/" + player.xpToLevel , 250/2 , 24/2+4);
+    popMatrix();
+  }
+
+  // Draw stats box
+  void stats() {
+    // Asteroids Left Counter
+    pushMatrix();
+      translate(width - 82, 2);
+
+      // Box
+      fill(255, 255, 255);
+      rectMode(CORNER);
+      rect(0, 0, 80, 24);
+
+      // Label
+      fill(blue);
+      textAlign(LEFT, CENTER);
+      textSize(20);
+      text(" x " + (game.asteroids.size() + game.wave.asteroidCount), 25, 8);
+
+      // Icon
+      translate(12,12);
+      pushMatrix();
+        rotate(angle);
+        translate(-10,-10);
+        image(game.asteroidIcon, 0, 0);
+        angle += 0.01;
+      popMatrix();
+    popMatrix();
+
+    // Wave Counter
+    pushMatrix();
+      translate(width/2 , 2);
+
+      // Box
+      fill(255, 255, 255);
+      rectMode(CORNER);
+      rect(-50, 0, 100, 20);
+
+      // Label
+      fill(blue);
+      textAlign(CENTER, CENTER);
+      textSize(20);
+      text("WAVE " + game.wave.currentWave, -1, 6);
     popMatrix();
   }
 }

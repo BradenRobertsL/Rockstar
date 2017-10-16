@@ -34,7 +34,7 @@ class Asteroid extends Entity {
   }
 
   void update() {
-    angle += 0.02;
+    angle += 0.04;
     position.add(direction.normalize().mult(speed));
 
     if (health <= 0 && active)
