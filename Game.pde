@@ -3,6 +3,7 @@ class Game implements Scene {
   Ship player;
   Star star;
   WaveController wave;
+  HUD hud;
 
   boolean alive = true;
 
@@ -25,6 +26,7 @@ class Game implements Scene {
     wave = new WaveController(2, this);
     star = new Star(this);
     player = new Ship(300, 300, this);
+    hud = new HUD(this);
   }
 
   // Main scene loop
@@ -65,6 +67,8 @@ class Game implements Scene {
     // Check game over
     if (!alive)
       gameOver(player.score);
+
+      hud.drawHUD();
   }
 
   // Mouse handlers

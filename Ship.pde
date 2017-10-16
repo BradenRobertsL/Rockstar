@@ -121,6 +121,6 @@ class Ship extends Entity {
     damage = 20 + (level * 5);
     attackSpeed = 1 + (level * 0.75);
     health = 50 + (level * 2);
-    game.ship.maxHealth += health;
+    game.star.maxHealth += health;
   }
 }

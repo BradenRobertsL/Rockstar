@@ -37,13 +37,6 @@ class Bullet extends Entity {
       active = false;
   }
 
-  /**
-  *  Returns the point at the head of the bullet.
-  **/
-  PVector getPoint() {
-    return direction.mult(1);
-  }
-
   int getDamage() {
     return damage;
   }
