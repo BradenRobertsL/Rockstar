@@ -20,7 +20,7 @@ class Game implements Scene {
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
 
-    wave = new WaveController(1, this);
+    wave = new WaveController(2, this);
     star = new Star(this);
     player = new Ship(300, 300, this);
   }

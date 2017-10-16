@@ -30,8 +30,8 @@ boolean enter = false;
 
 public void setup() {
 
-  //size(1360, 765);
   
+  //fullScreen();
   frameRate(30);
 
   mainMenu = new Main();
@@ -42,7 +42,6 @@ public void setup() {
 
 public void draw() {
   currentScene.drawScene();
-  //image(cursor, mouseX - cursor.width/2, mouseY - cursor.height/2);
 }
 
 // Input Events
@@ -131,27 +130,29 @@ public void keyReleased() {
   }
 }
 class Asteroid extends Entity {
-  
+
   PVector direction;
   float angle = 0;
-  
+
   // Asteroid stats
   int healthMultiplier = 2;    // Size multiplied to calculate health
   int health;                  // Health points of asteroid
   float size;                  // Size of asteroid and damage it deals
+  float xp;                    // Amount of xp gained on kill
   float speed;                 // Movement speed of asteroid
-  
+
   Asteroid (float size, float speed, float x, float y, Game game) {
     health = (int) size * healthMultiplier;
     this.size = size;
+    this.xp = size;
     this.speed = speed;
-    
+
     this.game = game;
-    
+
     position = new PVector(x, y);
     direction = new PVector(width/2, height/2).sub(position);
   }
-  
+
   public void render() {
     if (active) {
       pushMatrix();
@@ -166,30 +167,31 @@ class Asteroid extends Entity {
       popMatrix();
     }
   }
-  
-  public void update() {    
+
+  public void update() {
     angle += 0.01f;
     position.add(direction.normalize().mult(speed));
-    
+
     if (health <= 0)
       active = false;
   }
-  
+
   public void damage(int d){
     health -= d;
   }
-  
+
   public void destroy(){
     active = false;
+    game.player.gainXP(xp);
   }
-  
+
   public boolean checkOverlap (Entity target) {
     if (Math.pow(target.position.x - position.x, 2.0f) + Math.pow(target.position.y - position.y, 2.0f) < Math.pow(size/2, 2.0f)) {
       return true;
     }
     return false;
   }
-  
+
   public int getHealth() { return health; }
 }
 class Bullet extends Entity {
@@ -307,82 +309,84 @@ class Entity {
   public void setDamage(int d) { damage = d; }
 }
 class Game implements Scene {
-  
+
   Ship player;
   Star star;
   WaveController wave;
-  
+
+  boolean alive = true;
+
   ArrayList<Entity> bullets = new ArrayList<Entity>();
   ArrayList<Entity> asteroids = new ArrayList<Entity>();
-  
+
   PImage starImage;
   PImage shipImage1;
   PImage boostImage1;
-  
+
   Game() {
-    
+
     // Load assets
     starImage = loadImage("assets/star.png");
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
-    
-    wave = new WaveController(1, this);
+
+    wave = new WaveController(2, this);
     star = new Star(this);
     player = new Ship(300, 300, this);
   }
-  
+
   // Main scene loop
   public void drawScene() {
     background(52,73,94);
-    
+
     wave.play();
-    
+
     checkBulletCollision();
     checkPlanetCollision();
-    
-    player.update();
+
+    if (alive) player.update();
     star.update();
-    
+
     bullets   = cleanUp(bullets);
     asteroids = cleanUp(asteroids);
-    
+
     update(bullets);
-    
+
     update(asteroids);
     render(asteroids);
-    
+
     star.render();
     render(bullets);
     player.render();
-    
 
-    
+
+
     // Check movement
-    if (up) {
+    if (up && alive) {
       player.move("forward");
     }
-    
-    if (down) {
+
+    if (down && alive) {
       player.move("reverse");
     }
-    if (mousePressed)
+    if (mousePressed && alive)
       player.fire = true;
   }
-  
+
   // Mouse handlers
   public void onMouseClick() {}
   public void onMouseDrag() {}
   public void onMouseRelease() {}
   public void onMouseMoved() {}
-  
+
   public void addBullet(float x, float y) {
     bullets.add(new Bullet(x, y, this));
   }
-  
+
   public void addAsteroid(float size, float speed, float x, float y) {
     asteroids.add(new Asteroid(size, speed, x, y, this));
   }
-  
+
   // Renders entities
   public void render(ArrayList<Entity> entity) {
     for (Entity e : entity) {
@@ -391,14 +395,14 @@ class Game implements Scene {
       }
     }
   }
-  
+
   // Updates entities
   public void update(ArrayList<Entity> entity) {
     for (Entity e : entity) {
       e.update();
     }
   }
-  
+
   // Cleans lists of inactive (dead) entities, returns a list without inactive entities
   public ArrayList<Entity> cleanUp(ArrayList<Entity> entity) {
     ArrayList<Entity> cleanList = new ArrayList<Entity>();
@@ -409,7 +413,7 @@ class Game implements Scene {
     }
     return cleanList;
   }
-  
+
   public void checkBulletCollision() {
     for (Entity a : asteroids) {
       for (Entity b : bullets) {
@@ -421,7 +425,7 @@ class Game implements Scene {
       }
     }
   }
-  
+
   public void checkPlanetCollision() {
     for (Entity a : asteroids) {
       if (abs(a.position.x - star.position.x) < (a.size/2 + star.size/2) && abs(a.position.y - star.position.y) < (a.size/2 + star.size/2)) {
@@ -520,77 +524,78 @@ interface Scene {
   public void onMouseMoved();
 }
 class Ship extends Entity {
-  
+
   // Temporary variables for ship shape
   int sWidth  = 50;
   int sLength = 30;
-  
+
   boolean boosting = false;
-  
+
   // Movement Variables
-  PVector position;  
+  PVector position;
   PVector direction;
   PVector velocity = new PVector(0, 0);
-  
-  float fric  = 0.95f;  // Friction in movement (1 being no friction and 0.1 being lots) 
+
+  float fric  = 0.95f;  // Friction in movement (1 being no friction and 0.1 being alot)
   float force = 1;    // Strength of rocket booster
-  
+
   // Stats
-  int level = 1;
+  int level = 1; // Level of ship
+  float xpToLevel = 200 * level; // Amount of xp needed to level up
   float xp = 0;
-  float damage = 5.0f + level; // Bullet damage on hit, scales with level
+  float damage = 20 + (level * 5); // Bullet damage on hit, scales with level
   float attackSpeed = 1 + (level * 0.5f); // Attacks per second
   float health = 50 + (level * 2); // Max health points
-  
+
   // Shooting timers
   long lastShot;
   boolean fire = false;
-  
+
   // Constructor
   Ship (float x, float y, Game game) {
     position = new PVector(x,y);
     this.game = game;
   }
-  
+
   // Draws ship and attatchments/effects
   public void render() {
     fill(200);
     noStroke();
-    
+
     // Calculating direction to face towards mouse
     PVector dir = new PVector(mouseX, mouseY).sub(position);
     float angle = atan2(dir.y, dir.x);
-    
+
     pushMatrix();
       translate(position.x, position.y);
       rotate(angle);
-      
+
       // Draw boost
       if (boosting && keyPressed)
         image(game.boostImage1, -sLength/2-11, -sWidth/2);
       // Draw ship
       image(game.shipImage1, -sLength/2, -sWidth/2);
     popMatrix();
-    
+
 
   }
-  
+
   // Updates the ships position and applies friction.
   public void update() {
     position.add(velocity);
     velocity.mult(fric);
-    
+
     if (fire) {
       fire();
     }
   }
-  
+
   // Moves the ship in specified direction
   public void move(String dir) {
     direction = new PVector(mouseX, mouseY).sub(position);
-    
+
     switch (dir) {
-      case "forward": 
+      case "forward":
         velocity.add(direction.normalize().mult(force));
         boosting = true;
         break;
@@ -599,64 +604,88 @@ class Ship extends Entity {
         break;
     }
   }
-  
+
   // Shoots a bullet
   public void fire() {
     // Check if cool down is complete
     long timeSince = millis() - lastShot;
-    
+
     if (timeSince > (60 / attackSpeed) * 10) {
       // Spawn bullet in correct position/direction
       PVector dir = new PVector(mouseX, mouseY).sub(position).normalize().mult(2);
       game.addBullet(position.x + dir.x, position.y + dir.y);
-      
+
       // Reset timer and input
       fire = false;
       lastShot = millis();
     }
-    
+
     // Reset input if couldn't shoot
     fire = false;
+  }
+
+  public void gainXP (float xp_) {
+    xp += xp_;
+    // If xp is at the required amount to level. levelUP.
+    if (xp >= xpToLevel) levelUp();
+  }
+
+  public void levelUp() {
+    xp = 0;
+    level++;
+
+    updateStats();
+  }
+
+// Updates the ships stats to correct values according to level
+  public void updateStats() {
+    xpToLevel = 200 * level;
+    damage = 20 + (level * 5);
+    attackSpeed = 1 + (level * 0.5f);
+    health = 50 + (level * 2);
   }
 }
 class Star extends Entity {
 
   int maxHealth = 1000;
-  int health = 1000;
+  int health = constrain(maxHealth, 0, maxHealth);
   float size = 100;
-  
+
   PImage star;
   PVector position = new PVector(width/2, height/2);
-  
+
   Star(Game game) {
     this.star = game.starImage;
     this.game = game;
   }
-  
+
   public void render() {
     pushMatrix();
       translate(position.x - star.width/2, position.y - star.height/2);
       image(star, 0, 0);
+
+      // Health Bar
       fill(255,255,255);
       rectMode(CORNER);
       rect(0, - 20, star.width, 10);
       fill(0, 255, 0);
-      if (health > 0) {
-        rect(2, - 18, (float) health/1000 * (star.width-4), 6);
-      }
+      if (health > 0) rect(2, - 18, (float) health/1000 * (star.width-4), 6);
       fill(255, 255, 255);
       textAlign(CENTER);
-      text(health, star.width/2, -22);
+      text(health < 0 ? 0 : health, star.width/2, -22);
     popMatrix();
   }
-  
+
   public void update() {
+    if (health <= 0) {
+      game.alive = false;
+    }
   }
-  
+
   public void damage(int d) {
     health = health - d;
   }
-  
+
   // Health regen per round?
   public void regen() {
   }
@@ -775,7 +804,7 @@ class WaveController {
     }
   }
 }
-  public void settings() {  fullScreen(); }
+  public void settings() {  size(1360, 765); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "Rockstar" };
     if (passedArgs != null) {
