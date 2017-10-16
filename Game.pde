@@ -23,8 +23,9 @@ class Game implements Scene {
 
   // Game over
   float fade = 0;
+  Button exit;
 
-  Game() {
+  Game(int difficulty) {
 
     // Load assets
     starImage = loadImage("assets/star.png");
@@ -32,18 +33,19 @@ class Game implements Scene {
     shipImage1 = loadImage("assets/ship_1.png");
     boostImage1 = loadImage("assets/boost_1.png");
     asteroidImage = loadImage("assets/asteroid.png");
-
     asteroidIcon = loadImage("assets/asteroidIcon.png");
-
     opensans = createFont("assets/OpenSans-SemiBold.ttf", 32);
 
     // Set loadFont
     textFont(opensans);
 
-    wave = new WaveController(2, this);
+    wave = new WaveController(difficulty, this);
     star = new Star(this);
     player = new Ship(300, 300, this);
     hud = new HUD(this);
+
+    // Buttons
+    exit = new Button(width/2, height - 120, color(231,76,60), "RETURN TO MENU");
   }
 
   // Main scene loop
@@ -174,6 +176,11 @@ class Game implements Scene {
     textSize(50);
     textAlign(CENTER, CENTER);
     text("SCORE: " + (score * wave.difficulty), width/2, height/2 + 10);
+
     if (fade < 1) fade += 0.01;
+    else {
+      exit.render();
+      if (exit.onButton && mousePressed) currentScene = mainMenu;
+    }
   }
 }

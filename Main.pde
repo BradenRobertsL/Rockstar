@@ -1,88 +1,85 @@
 class Main implements Scene {
 
   PImage header;
-  PImage buttonPlay;
-  PImage buttonExit;
-  PImage buttonSelected;
 
-  int selectedButton = 0;
+  ArrayList<Button> menu;
 
-  Button a;
-  Button b;
-  Button c;
+  Button play;
+  Button difficulty;
+  Button exit;
+
+  int dLevel = 1;         // Difficulty int level (default 1 - easy)
+  String dText = "EASY";  // Difficulty button text
 
   Main() {
 
     // Load assets
     header = loadImage("assets/header.png");
-    buttonPlay = loadImage("assets/button_play.png");
-    buttonExit = loadImage("assets/button_exit.png");
-    buttonSelected = loadImage("assets/button_selected.png");
 
-    b = new Button(10, 10, "PLAY");
-    a = new Button(10, 300, "EXIT");
-    c = new Button(10, 90, "DIFFICULTY: EASY");
+    play = new Button(width/2, height/2 - 40, "PLAY");
+    exit = new Button(width/2, height/2 + 160, "EXIT");
+    difficulty = new Button(width/2, height/2 + 60, "DIFFICULTY: " + dText);
+
+    // Initiate menu
+    menu = new ArrayList<Button>();
+
+    menu.add(play);
+    menu.add(difficulty);
+    menu.add(exit);
   }
 
   // Main scene loop
   void drawScene() {
-    background(52,73,94);
-    image(header, width/2 - header.width/2, 75);
-    image(buttonPlay, width/2 - buttonPlay.width/2, 400 - buttonPlay.height/2);
-    image(buttonExit, width/2 - buttonExit.width/2, 550 - buttonExit.height/2);
+    //background(52,73,94);
+    background(41,128,185);
 
-    // Draw selected button marker
-    if (selectedButton == 0)
-      image(buttonSelected, width/2 - buttonSelected.width/2, 400 - buttonSelected.height/2);
-    else
-      image(buttonSelected, width/2 - buttonSelected.width/2, 550 - buttonSelected.height/2);
+    image(header, width/2 - header.width/2, 100);
 
-    // Check input
-    if (up) {
-      if (selectedButton == 1)
-        selectedButton = 0;
-    }
-
-    if (down) {
-      if (selectedButton == 0)
-        selectedButton = 1;
-    }
-
-    if (enter) {
-      if (selectedButton == 0)
-        currentScene = game;
-      else
-        exit();
-    }
-
-    a.render();
-    b.render();
-    c.render();
+    play.render();
+    difficulty.render();
+    exit.render();
   }
 
-  // Mouse handlers
+  // Check for clicks on buttons
   void onMouseClick() {
-    if (mouseInsideButton(buttonPlay, 400))
-      currentScene = new Game();
-    if (mouseInsideButton(buttonExit, 550))
-      exit();
+    for (Button b : menu) {
+      if (b.onButton) {
+        switch (b.text) {
+          case "PLAY":
+            currentScene = new Game(dLevel);
+            break;
+          case "EXIT":
+            exit();
+            break;
+          default:
+            setDifficulty();
+            break;
+        }
+      }
+    }
+  }
+
+  void setDifficulty() {
+    switch (dLevel) {
+      case 1:
+        dLevel = 2;
+        dText = "NORMAL";
+        break;
+      case 2:
+        dLevel = 3;
+        dText = "INSANE";
+        break;
+      case 3:
+        dLevel = 1;
+        dText = "EASY";
+        break;
+    }
+
+    // Update button text
+    difficulty.updateText("DIFFICULTY: " + dText);
   }
 
   void onMouseDrag() {}
   void onMouseRelease() {}
-  void onMouseMoved() {
-    if (mouseInsideButton(buttonPlay, 400))
-      selectedButton = 0;
-    if (mouseInsideButton(buttonExit, 550))
-      selectedButton = 1;
-  }
-
-  boolean mouseInsideButton(PImage button, int yPos) {
-    if ( mouseX < width/2 + button.width/2 && mouseX > width/2 - button.width/2) {
-      return ( mouseY < yPos + button.height/2 && mouseY > yPos - button.height/2);
-    }
-
-    // Not inside
-    return false;
-  }
+  void onMouseMoved() {}
 }

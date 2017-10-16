@@ -14,6 +14,8 @@ class HUD {
 
   float angle = 0;
 
+  int rounding = 5; // Box rounding value
+
   HUD (Game _game) {
     game = _game;
     star = game.star;
@@ -39,7 +41,7 @@ class HUD {
       // Box
       rectMode(CORNER);
       fill(255, 255, 255);
-      rect(0, 0, 50, 50);
+      rect(0, 0, 50, 50, rounding);
 
       // Level
       fill(blue);
@@ -62,10 +64,10 @@ class HUD {
       // Box
       fill(255,255,255);
       rectMode(CORNER);
-      rect(0, 0, 250, 24);
+      rect(0, 0, 250, 24, rounding);
 
       fill(silver);
-      rect(2, 2, 250-4, 24-4);
+      rect(2, 2, 250-4, 24-4, rounding);
 
       // Bar
       // Calculate percentage of health and set color accordingly
@@ -74,7 +76,7 @@ class HUD {
       else
         fill(lerpColor(red, yellow, (float) (star.health)/(star.maxHealth/2)));
 
-      if (star.health > 0) rect(2, 2, (float) star.health/star.maxHealth * (250-4), 24-4);
+      if (star.health > 0) rect(2, 2, (float) star.health/star.maxHealth * (250-4), 24-4, rounding);
 
       // Label
       textSize(10);
@@ -91,14 +93,14 @@ class HUD {
       // Box
       fill(255,255,255);
       rectMode(CORNER);
-      rect(0, 0, 250, 24);
+      rect(0, 0, 250, 24, rounding);
 
       fill(silver);
-      rect(2, 2, 250-4, 24-4);
+      rect(2, 2, 250-4, 24-4, rounding);
 
       // Bar
       fill(blue);
-      if (star.health > 0) rect(2, 2, (float) player.xp/player.xpToLevel * (250-4), 24-4);
+      if (star.health > 0) rect(2, 2, (float) player.xp/player.xpToLevel * (250-4), 24-4, rounding);
       fill(255, 255, 255);
 
       // Label
@@ -117,7 +119,7 @@ class HUD {
       // Box
       fill(255, 255, 255);
       rectMode(CORNER);
-      rect(0, 0, 80, 24);
+      rect(0, 0, 80, 24, rounding);
 
       // Label
       String aLeft = String.format("%02d", (game.asteroids.size() + game.wave.asteroidCount));
@@ -146,7 +148,7 @@ class HUD {
       // Box
       fill(255, 255, 255);
       rectMode(CORNER);
-      rect(-50, 0, 100, 24);
+      rect(-50, 0, 100, 24, rounding);
 
       // Label
       fill(blue);
@@ -162,7 +164,7 @@ class HUD {
       // Box
       fill(255, 255, 255);
       rectMode(CORNER);
-      rect(0, 0, 84, 24);
+      rect(0, 0, 84, 24, rounding);
 
       // Label
       String score = String.format("%07d", game.player.score * game.wave.difficulty);
