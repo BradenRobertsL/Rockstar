@@ -19,6 +19,9 @@ class Game implements Scene {
 
   PFont opensans;
 
+  // Game over
+  float fade = 0;
+
   Game() {
 
     // Load assets
@@ -54,14 +57,17 @@ class Game implements Scene {
     bullets   = cleanUp(bullets);
     asteroids = cleanUp(asteroids);
 
-    update(bullets);
-
-    update(asteroids);
-    render(asteroids);
-
     star.render();
     render(bullets);
+    render(asteroids);
     player.render();
+
+    if (alive) {
+      update(bullets);
+      update(asteroids);
+    }
+
+    hud.drawHUD();
 
     // Check movement
     if (up && alive) {
@@ -77,8 +83,6 @@ class Game implements Scene {
     // Check game over
     if (!alive)
       gameOver(player.score);
-
-      hud.drawHUD();
   }
 
   // Mouse handlers
@@ -145,6 +149,19 @@ class Game implements Scene {
   }
 
   void gameOver(int score) {
-    System.out.println("Score : " + score);
+    color bg = color(33, 33, 33, (fade * 255));
+    color text = color(231, 76, 60, (fade * 255));
+
+    //System.out.println("Score : " + score);
+    rectMode(CORNER);
+    fill(bg);
+    rect(0, 0, width, height);
+
+    fill(text);
+    textSize(100);
+    textAlign(CENTER, BOTTOM);
+    text("GAME OVER", width/2, height/2 - 50);
+
+    if (fade < 1) fade += 0.01;
   }
 }

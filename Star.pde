@@ -1,6 +1,6 @@
 class Star extends Entity {
 
-  int maxHealth = 1000;
+  int maxHealth = 10;
   int health = constrain(maxHealth, 0, maxHealth);
   float size = 100;
 
