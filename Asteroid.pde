@@ -55,7 +55,7 @@ class Asteroid extends Entity {
   }
 
   boolean checkOverlap (Entity target) {
-    if ((target.position.x - position.x) + (target.position.y - position.y) < (size/2)) {
+    if (Math.hypot(position.x-target.position.x, position.y-target.position.y) < size/2) {
       return true;
     }
     return false;
