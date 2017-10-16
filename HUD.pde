@@ -104,7 +104,7 @@ class HUD {
       // Label
       textSize(10);
       fill(white);
-      text("Experience: " + player.xp + "/" + player.xpToLevel , 250/2 , 24/2+4);
+      text("Experience: " + Math.round(player.xp) + "/" + player.xpToLevel , 250/2 , 24/2+4);
     popMatrix();
   }
 
@@ -112,7 +112,7 @@ class HUD {
   void stats() {
     // Asteroids Left Counter
     pushMatrix();
-      translate(width - (204), 2);
+      translate(width - (168), 2);
 
       // Box
       fill(255, 255, 255);
@@ -120,17 +120,20 @@ class HUD {
       rect(0, 0, 80, 24);
 
       // Label
+      String aLeft = String.format("%02d", (game.asteroids.size() + game.wave.asteroidCount));
+
       fill(blue);
       textAlign(LEFT, CENTER);
       textSize(20);
-      text("x", 28, 6);
-      text((game.asteroids.size() + game.wave.asteroidCount), 47, 8);
+      text("x", 30, 6.5);
+      text(aLeft, 47, 8);
 
       // Icon
       translate(12,12);
       pushMatrix();
         rotate(angle);
         translate(-10,-10);
+        scale(0.9);
         image(game.asteroidIcon, 0, 0);
         angle += 0.01;
       popMatrix();
@@ -143,23 +146,23 @@ class HUD {
       // Box
       fill(255, 255, 255);
       rectMode(CORNER);
-      rect(-50, 0, 100, 20);
+      rect(-50, 0, 100, 24);
 
       // Label
       fill(blue);
       textAlign(CENTER, CENTER);
       textSize(20);
-      text("WAVE " + game.wave.currentWave, -1, 7);
+      text("WAVE " + game.wave.currentWave, -1, 8.5);
     popMatrix();
 
     // Score Counter
     pushMatrix();
-      translate(width-92, 2);
+      translate(width-86, 2);
 
       // Box
       fill(255, 255, 255);
       rectMode(CORNER);
-      rect(0, 0, 90, 24);
+      rect(0, 0, 84, 24);
 
       // Label
       String score = String.format("%07d", game.player.score * game.wave.difficulty);
