@@ -151,7 +151,7 @@ class Game implements Scene {
       for (Entity b : bullets) {
         boolean collided = a.checkOverlap(b);
         if (collided) {
-          a.damage(player.damage);
+          a.damage(Math.round(player.damage));
           b.destroy(true);
         }
       }

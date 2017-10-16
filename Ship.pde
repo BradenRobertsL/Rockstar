@@ -128,7 +128,7 @@ class Ship extends Entity {
     System.out.println("Gained " + xp_ + " xp");
     // If xp is at the required amount to level. levelUP.
     if (xp >= xpToLevel) {
-      int leftOverXP = xp - xpToLevel;
+      float leftOverXP = xp - xpToLevel;
       levelUp();
       xp = leftOverXP;
     }
@@ -148,12 +148,13 @@ class Ship extends Entity {
     }
   }
 
-  // Updates the ships stats to correct values according to level.
+  // Updates the ships and stars stats to correct values according to level.
   void updateStats() {
     xpToLevel = 200 * level;
     damage = 20 + (level * 5);
     attackSpeed = 1 + (level * 0.75);
     health = 50 + (level * 2);
     game.star.maxHealth += health;
+    game.star.health += health;
   }
 }

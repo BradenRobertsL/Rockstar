@@ -80,6 +80,7 @@ class HUD {
       // Label.
       textSize(10);
       fill(white);
+      textAlign(CENTER, BOTTOM);
       text("Star health: " + star.health + "/" + star.maxHealth , 250/2 , 24/2+4);
     popMatrix();
   }
@@ -105,6 +106,7 @@ class HUD {
       // Label.
       textSize(10);
       fill(white);
+      textAlign(CENTER, BOTTOM);
       text("Experience: " + Math.round(player.xp) + "/" + player.xpToLevel , 250/2 , 24/2+4);
     popMatrix();
   }
