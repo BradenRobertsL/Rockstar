@@ -39,7 +39,8 @@ class Star extends Entity {
     health = health - d;
   }
 
-  // Health regen per round?
+  // Health regen per round
   void regen() {
+    health += game.player.level * 10;
   }
 }

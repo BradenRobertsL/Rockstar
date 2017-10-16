@@ -19,7 +19,7 @@ class Ship extends Entity {
   float xpToLevel = 200 * level; // Amount of xp needed to level up
   float xp = 0;
   float damage = 20 + (level * 5); // Bullet damage on hit, scales with level
-  float attackSpeed = 1 + (level * 0.5); // Attacks per second
+  float attackSpeed = 1 + (level * 0.75); // Attacks per second
   float health = 50 + (level * 2); // Max health points
 
   // Shooting timers
@@ -116,7 +116,7 @@ class Ship extends Entity {
   void updateStats() {
     xpToLevel = 200 * level;
     damage = 20 + (level * 5);
-    attackSpeed = 1 + (level * 0.5);
+    attackSpeed = 1 + (level * 0.75);
     health = 50 + (level * 2);
   }
 }
